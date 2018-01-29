@@ -14,5 +14,13 @@ class Lisp
   end
 
   def eval
+    case input[0]
+    when "'"
+      []
+    when '('
+      nil
+    else
+      input.to_i
+    end
   end
 end
