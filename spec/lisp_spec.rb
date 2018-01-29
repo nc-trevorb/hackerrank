@@ -22,6 +22,7 @@ describe Lisp do
         "should evaluate subtraction" => ["(- 6 2)", 4],
         "should evaluate multiplication" => ["(* 6 2)", 12],
         "should evaluate division" => ["(/ 6 2)", 3],
+        "should raise an error for bogus functions" => ["(bogus 1 2 3)", ERROR],
         "should raise an error for division by zero" => ["(/ 1 0)", ERROR],
 
         # stricter parsing
@@ -45,7 +46,7 @@ describe Lisp do
       }.each do |desc, (expression, result)|
         it "#{desc}: `#{expression} → #{result}`" do
           if result == ERROR
-            expect { Lisp.evaluate(expression) }.to raise_error(Lisp::ParseError)
+            expect { Lisp.evaluate(expression) }.to raise_error(StandardError)
           else
             expect(Lisp.evaluate(expression)).to eq(result)
           end

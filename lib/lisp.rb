@@ -19,15 +19,27 @@ class Lisp
       symbols = get_symbols(input[1..-1])
       symbols.map{|s| Lisp.evaluate(s)}
     when '('
-      nil
+      symbols = get_symbols(input)
+      apply_function(symbols)
     else
       input.to_i
     end
   end
 
+  def apply_function(symbols)
+    return if symbols.empty?
+
+    case symbols.first
+    when '+', '-', '*', '/'
+      symbols[1..-1].map{|x| Lisp.evaluate(x)}.inject(symbols.first)
+    else
+      raise ParseError.new('invalid symbol')
+    end
+  end
+
   def get_symbols(str)
     if !(str.start_with?('(') && str.end_with?(')'))
-      raise ParseError
+      raise ParseError.new('unbalanced parens')
     else
       str[1..-2].split
     end
