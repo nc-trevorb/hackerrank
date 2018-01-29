@@ -21,8 +21,14 @@ class Lisp
     when '('
       symbols = get_symbols(input)
       apply_function(symbols)
+    when /\d/
+      if input =~ /^\d*$/
+        input.to_i
+      else
+        raise ParseError.new("can't parse #{input}")
+      end
     else
-      input.to_i
+      raise ParseError.new("can't start with #{input[0]}")
     end
   end
 
